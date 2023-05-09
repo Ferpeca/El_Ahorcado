@@ -2,15 +2,23 @@
 <html>
 <head>
     <meta charset="utf-8" />
+    <script src="Fernando_Peña_practica.js"></script>
     <title>Ahorcado</title>
-    <script type="text/javascript" src="./Fernando_Peña_practica.js"></script>
 </head>
-<body onload="iniciarTemporizador(60)">
+<body onload="iniciarTemporizador()">
+
+  <div>
+    <h3>Dificultad:</h3>
+    <button id="facil" onclick="iniciarJuegoFacil()">Fácil</button>
+    <button id="medio" onclick="iniciarJuegoNormal()">Normal</button>
+    <button id="Dificultad" onclick="iniciarJuegoDificil()">Difícil</button>
+
+  </div>
+
     <p>
         Elige una letra:
-        <input type="text" id="letra" />
-        <input type="button" id="boton" value="Eleccion" />
     </p>
+    <input type="text"> <button id="calcular">Comprobar letra</button>
     
     <div>
       <h3>Puntuación:</h3>
@@ -21,5 +29,6 @@
       <h3>Tiempo:</h3>
       <p id="contador"></p>
     </div>
+    
 </body>
 </html>

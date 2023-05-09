@@ -56,3 +56,37 @@ body {
   button:hover {
     background-color: #0062cc;
   }
+  .card-header {
+    background-color: #f8f9fa;
+  }
+  .btn-group-separate .btn {
+    margin-right: 110px;
+  }
+
+  .card-header button {
+    color: #007bff;
+    font-weight: bold;
+  }
+
+  .card-header button:hover {
+    text-decoration: underline;
+  }
+
+  .card-body {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+  }
+  .barra {
+    width: 300px;
+    height: 20px;
+    background-color: #ccc;
+    position: relative;
+  }
+
+  .boton-deslizante {
+    width: 50px;
+    height: 20px;
+    background-color: #007bff;
+    position: absolute;
+    cursor: grab;
+  }
