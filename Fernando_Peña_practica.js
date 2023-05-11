@@ -1,44 +1,47 @@
-/*var palabrasDificil = ["electroencefalografista","esternocleidomastoideo","electroencefalográfico","anticonstitucionalidad","electroencefalografia","contrarrevolucionario","desoxirribonucleotido","interdisciplinariedad","otorrinolaringologico","antinorteamericanismo","constitucionalizacion","corresponsabilizacion","preterintencionalidad","pseudohermafroditismo","electroencefalograma"];
-var palabrasNormales =["cabeza","	calles","cascos","encaje","enfado","exacto","europa","huella","huerto","huelen","helado","halago","juicio","jardín","juegos","llover","llorar","morado","mostrar","musica"];
-var palabrasFacil =["feo","dar","ver","uso","rio","rol","paz","rey","pan","mal","hoy","mar","adn","ano","uva","ave","ola","gps","pez","red","res","oro","ego","sal","gay","mil","rie",]
-//var palabrasDificilAle = palabrasDificil[Math.floor(Math.random() * palabras.length)];
-//var palabrasNomralesAle = palabrasNormales[Math.floor(Math.random() * palabras.length)];
-//var palabrasFacilesAle = palabrasFacil[Math.floor(Math.random() * palabras.length)];
-var tiempoRestante;
-let palabraSeleccionada; 
-let letrasAdivinadas; 
-let numeroIntentos; 
-var temporizador;
-var puntuacion = 0;
-var tiempo = 0;
-var imagenesFallo = ["Cabeza.PNG", "Cuerpo.PNG", "BrazoIzquierdo.PNG","BrazoDerecho.PNG","PiernaIzquierda.PNG","PiernaDerecha_cuerpoEntero.PNG"];
-
-// Obtén los elementos de los botones
-const botonFacil = document.getElementById("facil");
-const botonMedio = document.getElementById("medio");
-const botonDificil = document.getElementById("dificil");*/
-
-document.querySelector('#calcular').addEventListener('click', ()=>{
-  alert(1)
-});
-
-/*
-// Agrega event listeners a los botones
-botonFacil.addEventListener("click", function() {
-  iniciarJuego(palabrasFacil);
-});
-
-botonMedio.addEventListener("click", function() {
-  iniciarJuego(palabrasNormales);
-});
-
-botonDificil.addEventListener("click", function() {
-  iniciarJuego(palabrasDificil);
-});
+//RECUERDA APUNTARTE ABSOLUTAMENTE TODO SOBRE TODO LO QUE TIENES PENSADO HACER
+//PARA ACORDARTE QUE VAS HACER EL DIA SIGUIENTE CON EL TRABAJO 
+//Y NO PERDERTE
+//MAÑANA ESTOY TODO EL DIA E INTENTAR TENERLO CASI TODO Y EL VIERNES RESUELVO DUDAS CON RICARDO
+//NO VA HABER MAS DIAS.
 
 
+let palabrejas; // Variable para almacenar la palabra a adivinar
+let errores = 0; // Contador de errores
+let aciertos = 0; // Contador de aciertos
+let tiempoRestante = 120; // Tiempo para adivinar las palabras
+let puntuacion = 0; // Puntuación de la partida
+let timeout; // Timeout para la cuenta regresiva
+let puntuacionInterval; // variable para guardar la puntuación cons et interval en un futuro
+let juegoTerminado = false; // indicador futuro para indicar si el juego ha terminado
 
-function iniciarJuego(palabrasSeleccionadas) {
+
+// Array de palabras para el juego
+const palabras = ['manzana', 'camiseta', 'mariposa', 'cadaver', 'vikingo', 'baloncesto', 'matrimonio'];
+
+// Selección de elementos del DOM
+const btn = id('jugar'); // Botón "jugar"
+const imagen = id('imagen'); // contenedor donde van a ir las fotos
+const btn_letras = document.querySelectorAll("#letras button"); // Botones de las letras
+const reiniciarBtn = id('reiniciar'); // Botón de reiniciar
+
+// Evento click para reiniciar el juego
+reiniciarBtn.addEventListener('click', reiniciar);
+//Evento click para iniciarlo
+btn.addEventListener('click', iniciar);
+
+
+//ACUERDATE!! es una función auxiliar que se utiliza para coger un elemento del DOM por su ID. El str representa el ID del elemento que se desea coger, y utiliza la función document.getElementById(str) para buscar y devolver ese elemento.
+function id(str) {
+    return document.getElementById(str)
+}
+
+//CAMBIO DE ENFOQUE VOY HACERLO CON BOTONES PARA LAS LETRAS Y NO VOY HACER NIVELES PORQUE ME ESTOY ATASCANDO
+//CUANDO LEA ESTO VOY HACER EL METODO PARA QUE SALGA UNA PALABRA ALEATORIA Y SE SUSTITUYA POR GUIONES
+//LO TENGO ABAJO PERO NO FUNCIONABA.
+//HACER EL CONTADOR SIN EL ALERT, ES MUY MOLESTO PARA DESARROLLAR Y HACER PRUEBAS
+
+
+/*function iniciarJuego(palabrasSeleccionadas) {
   // Seleccionar una palabra aleatoria
   const indiceAleatorio = Math.floor(Math.random() * palabrasSeleccionadas.length);
   palabraSeleccionada = palabrasSeleccionadas[indiceAleatorio];
@@ -53,25 +56,15 @@ function iniciarJuego(palabrasSeleccionadas) {
 
   // Mostrar la palabra a adivinar
   mostrarPalabraAdivinar();
-}
+}*/
 
-function ocultarImagenesAhorcado() {
+/*function ocultarImagenesAhorcado() {
   imagenesAhorcado.forEach(function(imagen) {
     imagen.style.display = "none";
   });
-}
+}*/
 
-function mostrarPalabraAdivinar() {
-  var palabraAdivinar = document.getElementById("palabra-adivinar");
-  palabraAdivinar.innerHTML = "";
 
-  for (var i = 0; i < palabraSeleccionada.length; i++) {
-    var letra = palabraSeleccionada[i];
-    var span = document.createElement("span");
-    span.textContent = letrasAdivinadas.includes(letra) ? letra : "_";
-    palabraAdivinar.appendChild(span);
-  }
-}
 
 /*function iniciarTemporizador(tiempo) {
   tiempoRestante = tiempo;
@@ -100,6 +93,4 @@ function detenerTemporizador() {
 document.getElementById("puntuacion").innerHTML = puntuacion;
 document.getElementById("contador").innerHTML = "Tiempo restante: " + tiempo + " segundos";
 
-function iniciar() {
-  iniciarTemporizador();
-}*/
+*/

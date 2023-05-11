@@ -1,34 +1,70 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8" />
-    <script src="Fernando_Peña_practica.js"></script>
-    <title>Ahorcado</title>
+  <meta charset="utf-8" />
+
+  <title>Ahorcado</title>
 </head>
-<body onload="iniciarTemporizador()">
 
-  <div>
-    <h3>Dificultad:</h3>
-    <button id="facil" onclick="iniciarJuegoFacil()">Fácil</button>
-    <button id="medio" onclick="iniciarJuegoNormal()">Normal</button>
-    <button id="Dificultad" onclick="iniciarJuegoDificil()">Difícil</button>
+<body>
 
-  </div>
-
-    <p>
-        Elige una letra:
-    </p>
-    <input type="text"> <button id="calcular">Comprobar letra</button>
-    
+  <header>
+    <h1>El Ahorcado</h1>
+  </header>
+  <main>
+    <img id="imagen" src="Imagenes/img0.PNG" alt="Ahorcado">
     <div>
-      <h3>Puntuación:</h3>
-      <p id="puntuacion">0</p>
+      <p id="palabra_a_adivinar"></p>
+      <button id="jugar">obtener palabra</button>
+      <button id="reiniciar">Reiniciar</button>
+      <p id="resultado"></p>
+      <div id="letras">
+        <button>A</button>
+        <button>B</button>
+        <button>C</button>
+        <button>D</button>
+        <button>E</button>
+        <button>F</button>
+        <button>G</button>
+        <button>H</button>
+        <button>I</button>
+        <button>J</button>
+        <button>K</button>
+        <button>L</button>
+        <button>M</button>
+        <button>N</button>
+        <button>Ñ</button>
+        <button>O</button>
+        <button>P</button>
+        <button>Q</button>
+        <button>R</button>
+        <button>S</button>
+        <button>T</button>
+        <button>U</button>
+        <button>V</button>
+        <button>W</button>
+        <button>X</button>
+        <button>Y</button>
+        <button>Z</button>
+
+      </div>
+
+      <br><br><br>
+
+      <div id="contador"></div>
+
+      <br><br><br>
+
+      <p id="puntuacion">Puntuación: <span id="puntuacion-valor"></span></p>
+
+      <br><br>
+
+
     </div>
-    
-    <div>
-      <h3>Tiempo:</h3>
-      <p id="contador"></p>
-    </div>
-    
+  </main>
+
+  <script src="Fernando_Peña_practica.js"></script>
 </body>
+
 </html>
