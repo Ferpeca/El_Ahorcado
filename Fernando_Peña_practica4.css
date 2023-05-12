@@ -1,46 +1,211 @@
-body{
+#bodyinicio {
     margin: 0;
-    font-family: 'Carter one',Arial, Helvetica, sans-serif;
+    font-family: 'Carter one', Arial, Helvetica, sans-serif;
+    background-color: #b0ddf3;
 }
-header{
+
+header {
     background: black;
     padding: 10px;
     text-align: center;
     margin-bottom: 20px;
 }
-h1{
+
+h1 {
     margin: 0;
     color: white;
 }
-main{
+
+main {
     width: 80%;
     margin: auto;
     padding: 20px;
     background: rgba(166, 87, 87, 0.7);
 }
-#imagen{
-    width:200px;
+
+#imagen {
+    width: 200px;
 }
-#palabra_a_adivinar{
+
+#palabra_a_adivinar {
     height: 3em;
 }
-#palabra_a_adivinar span{
-    vertical-align:bottom ;
+
+#palabra_a_adivinar span {
+    vertical-align: bottom;
     font-size: 2em;
     border-bottom: 2px solid black;
     width: 30px;
     text-align: center;
-    margin-right:6px ;
+    margin-right: 6px;
     display: inline-block;
 }
-#letras{
+
+#letras {
     margin-top: 30px;
     display: flex;
     flex-wrap: wrap;
     gap: 7px;
 }
-#letras button{
+
+#letras button {
     width: 28px;
     padding: 6px 0;
     text-align: center;
+}
+
+/* Estilos para el acordeón */
+.accordion .card {
+    border: none;
+    border-bottom: 1px solid #ddd;
+}
+
+.accordion .card-header {
+    background-color: #f2f2f2;
+    border: none;
+}
+
+.accordion .btn-link {
+    color: #333;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.accordion .card-body {
+    padding: 20px;
+}
+
+#palabra_a_adivinar {
+    font-size: 2rem;
+    color: #000000;
+    text-align: center;
+    margin: 0 auto;
+}
+.card {
+    background-color: #f8f9fa;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+  }
+
+  .card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+  }
+
+  .card-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+
+  .card-body {
+    padding: 15px;
+  }
+
+  .card-body p {
+    margin-bottom: 10px;
+  }
+  #preguntaJugar {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  #preguntaJugar p {
+    margin-bottom: 10px;
+  }
+
+  #opcion1,
+  #opcion2,
+  #opcion3 {
+    display: block;
+    margin: 10px auto;
+    width: 200px;
+  }
+  #container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Estilos para el main */
+  #maininicio {
+    margin: 20px 20px 20px 0; /* Ajusta el valor del margen izquierdo según sea necesario */
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+  }
+
+  /* Estilos para las secciones y artículos */
+  section,
+  article {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Estilos para los encabezados */
+  #headerinicio {
+    background-color: #007bff;
+    color: #fff;
+    padding: 18px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    width: 100%;
+  }
+
+  /* Estilos para los botones */
+ 
+
+  
+  /* Estilos para el contenedor de la pregunta */
+  #preguntaJugar {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+#jugar,
+#reiniciar {
+    font-size: 1rem;
+    color: #ffffff;
+    background-color: #006699;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+#resultado {
+    font-size: 1.5rem;
+    color: #ff0000;
+    text-align: center;
+    margin: 10px auto;
+}
+
+
+#contador {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #006699;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+#puntuacion {
+    font-size: 2rem;
+    color: #000000;
+    text-align: center;
+    margin: 0 auto;
 }

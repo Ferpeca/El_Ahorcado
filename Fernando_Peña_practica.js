@@ -1,9 +1,3 @@
-//RECUERDA APUNTARTE ABSOLUTAMENTE TODO SOBRE TODO LO QUE TIENES PENSADO HACER
-//PARA ACORDARTE QUE VAS HACER EL DIA SIGUIENTE CON EL TRABAJO 
-//Y NO PERDERTE
-//MAÑANA ESTOY TODO EL DIA E INTENTAR TENERLO CASI TODO Y EL VIERNES RESUELVO DUDAS CON RICARDO
-//NO VA HABER MAS DIAS.
-
 
 let palabrejas; // Variable para almacenar la palabra a adivinar
 let errores = 0; // Contador de errores
@@ -15,8 +9,12 @@ let puntuacionInterval; // variable para guardar la puntuación cons et interval
 let juegoTerminado = false; // indicador futuro para indicar si el juego ha terminado
 
 
+
+
+
+
 // Array de palabras para el juego
-const palabras = ['manzana', 'camiseta', 'mariposa', 'cadaver', 'vikingo', 'baloncesto', 'matrimonio'];
+const palabras = ['manzana', 'camiseta', 'mariposa', 'cadaver', 'vikingo', 'baloncesto', 'matrimonio','atacar','viaje','erosionar','tijeras','chispa','anillo','hijo','cubiertos','municipalidad','archivar','falsificacion','eternidad','experimento','bermudas','desenrollar','necesito','aprobar','unica','asignatura','quedar','favor','desastre','tristeza','ansiedad','miedo','tiempo','timbre'];
 
 
 //ACUERDATE!! es una función auxiliar que se utiliza para coger un elemento del DOM por su ID. El str representa el ID del elemento que se desea coger, y utiliza la función document.getElementById(str) para buscar y devolver ese elemento.
@@ -82,57 +80,256 @@ reiniciarBtn.addEventListener('mouseout', function (event) {
 
 
 
+function iniciarCuentaRegresiva() {
+  return new Promise((resolve, reject) => {
+      const contadorElement = id('contador');
+      contadorElement.innerHTML = '120';
 
-/*function iniciarJuego(palabrasSeleccionadas) {
-  // Seleccionar una palabra aleatoria
-  const indiceAleatorio = Math.floor(Math.random() * palabrasSeleccionadas.length);
-  palabraSeleccionada = palabrasSeleccionadas[indiceAleatorio];
+      let contador = 120;
 
-  // Restablecer las letras adivinadas, los intentos, las imágenes del ahorcado, el tiempo de inicio y la puntuación
-  letrasAdivinadas = [];
-  numeroIntentos = 0;
-  imagenesAhorcado = document.querySelectorAll("#imagenes-ahorcado img");
-  ocultarImagenesAhorcado();
-  tiempoInicio = Date.now();
-  puntuacion = 0;
+      function actualizarContador() {
+          contador--;
+          contadorElement.innerHTML = contador;
 
-  // Mostrar la palabra a adivinar
-  mostrarPalabraAdivinar();
-}*/
+          if (contador === 0) {
+              id('resultado').innerHTML = "¡Tiempo agotado!";
+              juegoTerminado = true;
+              game_over();
+              reject("Tiempo agotado"); // Rechazar la promesa en caso de tiempo agotado
+          } else {
+              timeout = setTimeout(actualizarContador, 1000);
+          }
+      }
 
-/*function ocultarImagenesAhorcado() {
-  imagenesAhorcado.forEach(function(imagen) {
-    imagen.style.display = "none";
+      timeout = setTimeout(actualizarContador, 1000);
+      resolve(); // Resolver la promesa una vez que se inicie la cuenta regresiva
   });
-}*/
-
-
-
-/*function iniciarTemporizador(tiempo) {
-  tiempoRestante = tiempo;
-  actualizarTemporizador();
-  temporizador = setTimeout(function() {
-    alert("¡Se acabó el tiempo!");
-  }, tiempo * 1000);
 }
 
-function actualizarTemporizador() {
-  var contador = document.getElementById("contador");
-  contador.innerHTML = "Tiempo restante: " + tiempoRestante;
-  if (tiempoRestante === 0) {
-    clearTimeout(temporizador);
-    alert("¡Se acabó el tiempo!");
-  } else {
-    tiempoRestante--;
-    setTimeout(actualizarTemporizador, 1000);
+//Esta funcion nos va ayudar a sacar una palabra del array en iniciar ejerciendo como indice
+function obtener_random(num_min, num_max) {
+  const amplitud_valores = num_max - num_min; // son saca la amplitud de palabras que hay en la array, si necesito sacar un numero de 10 al 20, si lo rento tengo la amplitud, qeu son 10, en este caso igual
+  const valor_al_azar = Math.floor(Math.random() * amplitud_valores) + num_min;//Se utilizara mas adelante para generar un numero aletario que sera la posicion la palbra en la array por ende la palabra
+  return valor_al_azar; //Para cuando llame a la funcion devuelva ese numero
+
+}
+
+/*La función iniciar es una función asincrónica que espera a que la función obtener_random genere un número aleatorio y 
+en la cual reflejo el estado inicial del juego y preparo los elementos necesarios para que el jugador 
+comience a adivinar una palabra.*/
+async function iniciar(event) {
+
+  // Establecer la imagen de inicio
+  imagen.src = "Imagenes/img0.png";
+
+  puntuaciones = [];
+  
+
+  // Desactivar el botón "Obtener palabra" para que tengas que jugar esa palabra si o si
+  btn.disabled = true;
+
+  // Reiniciar los contadores de errores y aciertos
+  errores = 0;
+  aciertos = 0;
+
+  // Limpiar el contenido de la palabra a adivinar
+  const parrafo = id('palabra_a_adivinar');
+  parrafo.innerHTML = ""; //es importante limpiar el parrafo porque si no cada vez que le de al boton para conseguir una palabra nueva, se va a sumar a la anterior
+
+  // Obtener la cantidad de palabras disponibles
+  const cant_palabras = palabras.length;
+
+  // Generar un número aleatorio para seleccionar una palabra
+  const valor_al_azar = await obtener_random(0, cant_palabras);
+
+  // Asignar la palabra seleccionada a la variable palabrejas
+  palabrejas = palabras[valor_al_azar];
+  console.log(palabrejas);
+
+  // Obtener la cantidad de letras de la palabra
+  const cant_letras = palabrejas.length;
+
+  // Habilitar los botones de letras
+  for (let i = 0; i < btn_letras.length; i++) {
+      btn_letras[i].disabled = false;
+  }
+
+  // Crear un span para cada letra de la palabra a adivinar
+  for (let i = 0; i < cant_letras; i++) {
+      const span = document.createElement('span');
+      parrafo.appendChild(span);
+  }
+
+  // Iniciar el intervalo para guardar la puntuación periódicamente
+  puntuacionInterval = setInterval(guardarPuntuacion,10000);
+
+
+}
+
+
+
+for (let i = 0; i < btn_letras.length; i++) {
+  btn_letras[i].addEventListener('click', click_letras);
+
+}
+
+function actualizarListaPuntuaciones() {
+  const puntuacionesDiv = document.getElementById('puntuaciones');
+  puntuacionesDiv.innerHTML = ''; // Limpiar la lista de puntuaciones
+
+  // Recorrer el arreglo de puntuaciones y agregar cada partida a la lista
+  puntuaciones.forEach((puntuacion, index) => {
+    const partida = index + 1;
+    const puntuacionItem = `<li>Partida ${partida}: ${puntuacion}</li>`;
+    puntuacionesDiv.innerHTML += puntuacionItem;
+  });
+}
+
+
+/*Esta funcion se se encarga de procesar el clic en una letra adivinada, actualizar la interfaz 
+de usuario en función de si la letra es correcta o incorrecta*/
+function click_letras(event) {
+  // Obtener todos los elementos <span> que representan las letras de la palabra a adivinar
+  const spans = document.querySelectorAll('#palabra_a_adivinar span')
+
+  // Obtener el botón en el que se hizo clic
+  const boton = event.target;
+
+  // Deshabilitar el botón para evitar más clics cuando ya se ha pulsado
+  boton.disabled = true;
+  //convertir la letra y la palabra a minuscula
+  const letra = boton.innerHTML.toLowerCase();
+  const palabra = palabrejas.toLowerCase();
+
+  //para saber si se ha acertado una letra o no
+  let acierto = false;
+
+
+  // Recorrer cada letra de la palabra a adivinar
+  for (let i = 0; i < palabra.length; i++) {
+      // Si la letra adivinada coincide con una letra de la palabra en la posición i
+      if (letra == palabra[i]) {
+          // Actualizar el contenido del <span> correspondiente con la letra adivinada
+          spans[i].innerHTML = letra;
+
+          // Incrementar el contador de aciertos
+          aciertos++;
+
+          // Indicar que se ha acertado una letra
+          acierto = true;
+        
+      }
+  }
+  // Si no se ha acertado ninguna letra
+  if (acierto == false) {
+      // Incrementar el contador de errores
+      errores++;
+
+      // Construir la ruta de la imagen correspondiente al número de errores
+      const fuente = `Imagenes/img${errores}.png`;
+
+      // Seleccionar la imagen y actualizar su atributo src con la ruta de la imagen
+      const imagen = id(`imagen`);
+      imagen.src = fuente;
+  }
+
+  // Verificar si se ha alcanzado el límite de errores
+  if (errores == 6) {
+      // Actualizar el contenido del elemento con el id "resultado" para mostrar un mensaje de pérdida junto con la palabra a adivinar
+      id('resultado').innerHTML = "Perdiste, la palabra era: " + palabrejas;
+
+      // Realizar acciones para finalizar el juego
+      game_over();
+
+      // Deshabilitar el botón principal
+      btn.disabled = true;
+      guardarPuntuacion();
+
+      // Cancelar cualquier temporizador en curso
+      clearTimeout(timeout);
+  } else if (aciertos == palabrejas.length) {
+
+    btn.disabled = false;
+      // Incrementar la puntuación en 2 puntos
+      puntuacion += 2;
+
+      // Actualizar el contenido del elemento con el id "puntuacion" para mostrar la puntuación actualizada
+      id('puntuacion').textContent = 'Puntuación: ' + puntuacion;
+
+      // Actualizar el contenido del elemento con el id "resultado" para mostrar un mensaje de victoria
+      id('resultado').innerHTML = "¡FELICIDADES, HAS GANADO!"
+
+      // Realizar acciones para finalizar el juego
+      game_over();
   }
 }
 
-function detenerTemporizador() {
-  clearTimeout(temporizador);
+/*Esta funcion detiene el intervalo de puntuación, marca el juego como terminado, deshabilita los botones de letras*/
+function game_over() {
+  // Detener el intervalo que guarda la puntuación periódicamente
+  clearInterval(puntuacionInterval);
+
+  // Cambiar el valor de la variable "juegoTerminado" a true
+  juegoTerminado = true;
+
+  // Deshabilitar todos los botones de letras
+  for (let i = 0; i < btn_letras.length; i++) {
+      btn_letras[i].disabled = true;
+  }
+  guardarPuntuacion();
 }
 
-document.getElementById("puntuacion").innerHTML = puntuacion;
-document.getElementById("contador").innerHTML = "Tiempo restante: " + tiempo + " segundos";
+function reiniciar() {
+  const puntuacionAnterior = puntuacion; // Almacena la puntuación anterior
 
-*/
+  errores = 0;
+  aciertos = 0;
+  puntuacion = 0;
+  juegoTerminado = false;
+
+  id('resultado').innerHTML = "";
+
+  const spans = document.querySelectorAll('#palabra_a_adivinar span');
+  for (let i = 0; i < spans.length; i++) {
+      spans[i].innerHTML = "";
+  }
+
+  const imagen = id('imagen');
+  imagen.src = "Imagenes/img0.png";
+
+  for (let i = 0; i < btn_letras.length; i++) {
+      btn_letras[i].disabled = false;
+  }
+
+  btn.disabled = false;
+
+  clearTimeout(timeout); // Limpia el intervalo de tiempo anterior
+  iniciarCuentaRegresiva();
+  iniciar();
+
+
+}
+
+function guardarPuntuacion() {
+  // Obtener las puntuaciones almacenadas en el LocalStorage
+  let puntuaciones = localStorage.getItem('puntuaciones');
+
+  // Convertir las puntuaciones a un arreglo (si existen)
+  puntuaciones = puntuaciones ? JSON.parse(puntuaciones) : [];
+
+  // Agregar la puntuación actual al arreglo de puntuaciones
+  puntuaciones.push(puntuacion);
+
+  // Guardar el arreglo de puntuaciones en el LocalStorage
+  localStorage.setItem('puntuaciones', JSON.stringify(puntuaciones));
+
+}
+
+iniciarCuentaRegresiva();
+
+game_over();
+
+
+
+
+
