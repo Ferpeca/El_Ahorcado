@@ -1,11 +1,12 @@
 
+
+//Seccion de variables que empleamos
 let palabrejas; // Variable para almacenar la palabra a adivinar
 let errores = 0; // Contador de errores
 let aciertos = 0; // Contador de aciertos
-let tiempoRestante = 120; // Tiempo para adivinar las palabras
 let puntuacion = 0; // Puntuación de la partida
 let timeout; // Timeout para la cuenta regresiva
-let puntuacionInterval; // variable para guardar la puntuación cons et interval en un futuro
+let puntuacionInterval; // variable para guardar la puntuación
 let juegoTerminado = false; // indicador futuro para indicar si el juego ha terminado
 
 
@@ -79,32 +80,51 @@ reiniciarBtn.addEventListener('mouseout', function (event) {
 });
 
 
-
+// Sirve para iniciar la cuenta regresiva
+// Utiliza una promesa para manejar la cuenta regresiva y notificar cuando se inicia correctamente.
 function iniciarCuentaRegresiva() {
-  return new Promise((resolve, reject) => {
-      const contadorElement = id('contador');
-      contadorElement.innerHTML = '120';
+  return new Promise((resolve) => {
 
-      let contador = 120;
+    //pone 120 en el contenedor con id "contenedor"
+    const contadorElement = id('contador');
+    contadorElement.innerHTML = '120';
 
-      function actualizarContador() {
-          contador--;
-          contadorElement.innerHTML = contador;
+    let contador = 120;
+    //Hace la cuenta regresiva y si llega a 0 manda un mensaje y activa la funcion game_over, si no, sigue contando
+    function actualizarContador() {
+      contador--;
+      contadorElement.innerHTML = contador;
 
-          if (contador === 0) {
-              id('resultado').innerHTML = "¡Tiempo agotado!";
-              juegoTerminado = true;
-              game_over();
-              reject("Tiempo agotado"); // Rechazar la promesa en caso de tiempo agotado
-          } else {
-              timeout = setTimeout(actualizarContador, 1000);
-          }
+      if (contador === 0) {
+        id('resultado').innerHTML = "¡Tiempo agotado!";
+        juegoTerminado = true;
+        game_over();
+      } else {
+        timeout = setTimeout(actualizarContador, 1000);
       }
+    }
 
-      timeout = setTimeout(actualizarContador, 1000);
-      resolve(); // Resolver la promesa una vez que se inicie la cuenta regresiva
+    timeout = setTimeout(actualizarContador, 1000);
+    resolve(); // Resolver la promesa una vez que se inicie la cuenta regresiva
   });
 }
+
+function reiniciarCuentaRegresiva() {
+  if (timeout) {
+    clearTimeout(timeout); // Cancela la cuenta regresiva actual si existe
+  }
+  }
+
+  iniciarCuentaRegresiva()
+    .then(() => {
+      console.log('La cuenta regresiva ha finalizado');
+      // Aquí puedes realizar otras acciones o verificaciones adicionales
+    })
+    .catch((error) => {
+      console.log('Error: ' + error);
+      // Aquí puedes realizar las acciones necesarias para manejar el fin del juego debido a tiempo agotado
+    });
+
 
 //Esta funcion nos va ayudar a sacar una palabra del array en iniciar ejerciendo como indice
 function obtener_random(num_min, num_max) {
@@ -173,18 +193,6 @@ for (let i = 0; i < btn_letras.length; i++) {
 
 }
 
-function actualizarListaPuntuaciones() {
-  const puntuacionesDiv = document.getElementById('puntuaciones');
-  puntuacionesDiv.innerHTML = ''; // Limpiar la lista de puntuaciones
-
-  // Recorrer el arreglo de puntuaciones y agregar cada partida a la lista
-  puntuaciones.forEach((puntuacion, index) => {
-    const partida = index + 1;
-    const puntuacionItem = `<li>Partida ${partida}: ${puntuacion}</li>`;
-    puntuacionesDiv.innerHTML += puntuacionItem;
-  });
-}
-
 
 /*Esta funcion se se encarga de procesar el clic en una letra adivinada, actualizar la interfaz 
 de usuario en función de si la letra es correcta o incorrecta*/
@@ -197,6 +205,7 @@ function click_letras(event) {
 
   // Deshabilitar el botón para evitar más clics cuando ya se ha pulsado
   boton.disabled = true;
+  
   //convertir la letra y la palabra a minuscula
   const letra = boton.innerHTML.toLowerCase();
   const palabra = palabrejas.toLowerCase();
@@ -247,6 +256,8 @@ function click_letras(event) {
 
       // Cancelar cualquier temporizador en curso
       clearTimeout(timeout);
+
+
   } else if (aciertos == palabrejas.length) {
 
     btn.disabled = false;
@@ -266,6 +277,7 @@ function click_letras(event) {
 
 /*Esta funcion detiene el intervalo de puntuación, marca el juego como terminado, deshabilita los botones de letras*/
 function game_over() {
+  
   // Detener el intervalo que guarda la puntuación periódicamente
   clearInterval(puntuacionInterval);
 
@@ -279,24 +291,29 @@ function game_over() {
   guardarPuntuacion();
 }
 
+// Reinicia la cuenta regresiva y realiza las acciones necesarias para comenzar un nuevo juego.
 function reiniciar() {
-  const puntuacionAnterior = puntuacion; // Almacena la puntuación anterior
-
+  
+//Se restablecen los valores a 0
   errores = 0;
   aciertos = 0;
   puntuacion = 0;
   juegoTerminado = false;
 
+  //Vacia el mensaje de si has ganado o perdido
   id('resultado').innerHTML = "";
 
+  //Borra las letras que hay puestas en la palabra
   const spans = document.querySelectorAll('#palabra_a_adivinar span');
   for (let i = 0; i < spans.length; i++) {
       spans[i].innerHTML = "";
   }
 
+  //pone la imagen de 0
   const imagen = id('imagen');
   imagen.src = "Imagenes/img0.png";
 
+  //Vuelve a habilitar las palabras
   for (let i = 0; i < btn_letras.length; i++) {
       btn_letras[i].disabled = false;
   }
@@ -311,10 +328,11 @@ function reiniciar() {
 }
 
 function guardarPuntuacion() {
+
   // Obtener las puntuaciones almacenadas en el LocalStorage
   let puntuaciones = localStorage.getItem('puntuaciones');
 
-  // Convertir las puntuaciones a un arreglo (si existen)
+  // Convertir las puntuaciones a un arreglo.
   puntuaciones = puntuaciones ? JSON.parse(puntuaciones) : [];
 
   // Agregar la puntuación actual al arreglo de puntuaciones
