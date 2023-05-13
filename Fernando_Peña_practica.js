@@ -7,15 +7,9 @@ let aciertos = 0; // Contador de aciertos
 let puntuacion = 0; // Puntuación de la partida
 let timeout; // Timeout para la cuenta regresiva
 let puntuacionInterval; // variable para guardar la puntuación
-let juegoTerminado = false; // indicador futuro para indicar si el juego ha terminado
 
 
-
-
-
-
-// Array de palabras para el juego
-const palabras = ['manzana', 'camiseta', 'mariposa', 'cadaver', 'vikingo', 'baloncesto', 'matrimonio','atacar','viaje','erosionar','tijeras','chispa','anillo','hijo','cubiertos','municipalidad','archivar','falsificacion','eternidad','experimento','bermudas','desenrollar','necesito','aprobar','unica','asignatura','quedar','favor','desastre','tristeza','ansiedad','miedo','tiempo','timbre'];
+const palabras = ['camiseta', 'mariposa', 'cadaver', 'vikingo', 'baloncesto', 'matrimonio','atacar','viaje','erosionar','tijeras','chispa','anillo','hijo','cubiertos','municipalidad','archivar','falsificacion','eternidad','experimento','bermudas','desenrollar','necesito','aprobar','unica','asignatura','quedar','favor','desastre','tristeza','ansiedad','miedo','tiempo','timbre'];
 
 
 //ACUERDATE!! es una función auxiliar que se utiliza para coger un elemento del DOM por su ID. El str representa el ID del elemento que se desea coger, y utiliza la función document.getElementById(str) para buscar y devolver ese elemento.
@@ -39,9 +33,9 @@ btn.addEventListener('click', iniciar);
 const main = document.querySelector('main');
 
 
-//Con este evento lo que hago es que cada vez que se presione la C se cambie el fondo del body a azul 
+//Con este evento lo que hago es que cada vez que se presione la "c" se cambie el fondo del body a azul 
 document.addEventListener('keydown', function (event) {
-    if (event.key === 'c') {
+    if (event.key.toLowerCase() === 'c') {
         //Se utiliza el metodo getComputedStyle para coger el fondo que ya hay y se compara con el color a cambiar, si coincide se cambia a azul y si no a blanco
         if (getComputedStyle(document.body).backgroundColor === 'rgb(173, 216, 230)') {
             document.body.style.backgroundColor = ''; // Restaurar el color de fondo original del body
@@ -51,8 +45,8 @@ document.addEventListener('keydown', function (event) {
         //Se de tiene para que no haya propagacion a otros elementos
         event.stopPropagation();
 
-        //Si la tecla no es "c" y es "D" se hace lo mismo que el anterior pero sin metodo ya que tenemos un color asignado 
-    } else if (event.key === 'd') {
+        //Si la tecla no es "c" y es "d" se hace lo mismo que el anterior pero sin metodo ya que tenemos un color asignado 
+    } else if (event.key.toLowerCase() === 'd') {
         if (main.style.backgroundColor === 'rgb(144, 238, 144)') {
             main.style.backgroundColor = ''; // Restaurar el color de fondo original del main
         } else {
@@ -97,7 +91,6 @@ function iniciarCuentaRegresiva() {
 
       if (contador === 0) {
         id('resultado').innerHTML = "¡Tiempo agotado!";
-        juegoTerminado = true;
         game_over();
       } else {
         timeout = setTimeout(actualizarContador, 1000);
@@ -114,6 +107,7 @@ function reiniciarCuentaRegresiva() {
     clearTimeout(timeout); // Cancela la cuenta regresiva actual si existe
   }
   }
+  
 
   iniciarCuentaRegresiva()
     .then(() => {
@@ -133,16 +127,17 @@ function obtener_random(num_min, num_max) {
   return valor_al_azar; //Para cuando llame a la funcion devuelva ese numero
 
 }
-
-/*La función iniciar es una función asincrónica que espera a que la función obtener_random genere un número aleatorio y 
-en la cual reflejo el estado inicial del juego y preparo los elementos necesarios para que el jugador 
+/*La función iniciar en la cual reflejo el estado inicial del juego y preparo los elementos necesarios para que el jugador 
 comience a adivinar una palabra.*/
-async function iniciar(event) {
+ function iniciar(event) {
 
   // Establecer la imagen de inicio
   imagen.src = "Imagenes/img0.png";
 
   puntuaciones = [];
+
+//cada vez que se inicie no aparezca el resultado de si has perdido o ganado
+  id('resultado').innerHTML = "";
   
 
   // Desactivar el botón "Obtener palabra" para que tengas que jugar esa palabra si o si
@@ -160,7 +155,7 @@ async function iniciar(event) {
   const cant_palabras = palabras.length;
 
   // Generar un número aleatorio para seleccionar una palabra
-  const valor_al_azar = await obtener_random(0, cant_palabras);
+  const valor_al_azar =  obtener_random(0, cant_palabras);
 
   // Asignar la palabra seleccionada a la variable palabrejas
   palabrejas = palabras[valor_al_azar];
@@ -197,6 +192,7 @@ for (let i = 0; i < btn_letras.length; i++) {
 /*Esta funcion se se encarga de procesar el clic en una letra adivinada, actualizar la interfaz 
 de usuario en función de si la letra es correcta o incorrecta*/
 function click_letras(event) {
+
   // Obtener todos los elementos <span> que representan las letras de la palabra a adivinar
   const spans = document.querySelectorAll('#palabra_a_adivinar span')
 
@@ -247,15 +243,14 @@ function click_letras(event) {
       // Actualizar el contenido del elemento con el id "resultado" para mostrar un mensaje de pérdida junto con la palabra a adivinar
       id('resultado').innerHTML = "Perdiste, la palabra era: " + palabrejas;
 
+       // Deshabilitar el botón principal
+       btn.disabled = true;
+       guardarPuntuacion();
+
       // Realizar acciones para finalizar el juego
       game_over();
 
-      // Deshabilitar el botón principal
-      btn.disabled = true;
-      guardarPuntuacion();
-
-      // Cancelar cualquier temporizador en curso
-      clearTimeout(timeout);
+     
 
 
   } else if (aciertos == palabrejas.length) {
@@ -270,8 +265,6 @@ function click_letras(event) {
       // Actualizar el contenido del elemento con el id "resultado" para mostrar un mensaje de victoria
       id('resultado').innerHTML = "¡FELICIDADES, HAS GANADO!"
 
-      // Realizar acciones para finalizar el juego
-      game_over();
   }
 }
 
@@ -280,25 +273,26 @@ function game_over() {
   
   // Detener el intervalo que guarda la puntuación periódicamente
   clearInterval(puntuacionInterval);
-
-  // Cambiar el valor de la variable "juegoTerminado" a true
-  juegoTerminado = true;
+  
 
   // Deshabilitar todos los botones de letras
   for (let i = 0; i < btn_letras.length; i++) {
       btn_letras[i].disabled = true;
   }
+
+  //En caso de que se pierda que se detenga la cuenta atras 
+  reiniciarCuentaRegresiva()
   guardarPuntuacion();
 }
 
 // Reinicia la cuenta regresiva y realiza las acciones necesarias para comenzar un nuevo juego.
 function reiniciar() {
   
-//Se restablecen los valores a 0
   errores = 0;
   aciertos = 0;
   puntuacion = 0;
-  juegoTerminado = false;
+  id('puntuacion').innerHTML = 'Puntuación: '+ puntuacion;
+
 
   //Vacia el mensaje de si has ganado o perdido
   id('resultado').innerHTML = "";
@@ -343,9 +337,7 @@ function guardarPuntuacion() {
 
 }
 
-iniciarCuentaRegresiva();
 
-game_over();
 
 
 
