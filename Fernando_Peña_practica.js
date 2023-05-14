@@ -111,12 +111,12 @@ function reiniciarCuentaRegresiva() {
 
   iniciarCuentaRegresiva()
     .then(() => {
-      console.log('La cuenta regresiva ha finalizado');
-      // Aquí puedes realizar otras acciones o verificaciones adicionales
+      console.log('La cuenta regresiva ha iniciado');
+      // Aquí verifico que se ha ejecutado correctamente
     })
     .catch((error) => {
       console.log('Error: ' + error);
-      // Aquí puedes realizar las acciones necesarias para manejar el fin del juego debido a tiempo agotado
+      // Aquí marco si hay algun error
     });
 
 
@@ -127,6 +127,7 @@ function obtener_random(num_min, num_max) {
   return valor_al_azar; //Para cuando llame a la funcion devuelva ese numero
 
 }
+
 /*La función iniciar en la cual reflejo el estado inicial del juego y preparo los elementos necesarios para que el jugador 
 comience a adivinar una palabra.*/
  function iniciar(event) {
@@ -288,8 +289,7 @@ function game_over() {
 // Reinicia la cuenta regresiva y realiza las acciones necesarias para comenzar un nuevo juego.
 function reiniciar() {
   
-  errores = 0;
-  aciertos = 0;
+ 
   puntuacion = 0;
   id('puntuacion').innerHTML = 'Puntuación: '+ puntuacion;
 
