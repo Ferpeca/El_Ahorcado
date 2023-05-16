@@ -265,6 +265,9 @@ function click_letras(event) {
 
       // Actualizar el contenido del elemento con el id "resultado" para mostrar un mensaje de victoria
       id('resultado').innerHTML = "¡FELICIDADES, HAS GANADO!"
+      for (let i = 0; i < btn_letras.length; i++) {
+        btn_letras[i].disabled = true;
+    }
 
   }
 }
@@ -274,7 +277,9 @@ function game_over() {
   
   // Detener el intervalo que guarda la puntuación periódicamente
   clearInterval(puntuacionInterval);
-  
+  clearTimeout(timeout);
+  btn.disabled=true;
+
 
   // Deshabilitar todos los botones de letras
   for (let i = 0; i < btn_letras.length; i++) {
@@ -289,7 +294,8 @@ function game_over() {
 // Reinicia la cuenta regresiva y realiza las acciones necesarias para comenzar un nuevo juego.
 function reiniciar() {
   
- 
+  /*errores = 0;
+  aciertos = 0;*/
   puntuacion = 0;
   id('puntuacion').innerHTML = 'Puntuación: '+ puntuacion;
 
